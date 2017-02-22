@@ -109,7 +109,7 @@ void MqttClient::_on_publish(int) {
 }
 
 void MqttClient::_on_message(const mosquitto_message* message) {
-  qDebug() << "MqttClient Message of topic \"" << message->topic << "\", size" << message->payloadlen;
+  // qDebug() << "MqttClient Message of topic \"" << message->topic << "\", size" << message->payloadlen;
   // FIXME
   QString topic{message->topic};
   QByteArray payload{reinterpret_cast<const char*>(message->payload), message->payloadlen};
