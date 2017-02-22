@@ -16,7 +16,7 @@ android: {
   ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 
   # TODO: Change paths
-  ANDROID_EXTRA_LIBS += $$(HOME)/github/eclipse/mosquitto/android/lib/libmosquitto.so
+  ANDROID_EXTRA_LIBS += $$(HOME)/github/eclipse/mosquitto/_build_android/lib/libmosquitto.so
   INCLUDEPATH += $$(HOME)/github/eclipse/mosquitto/lib
   LIBS += -L$$(HOME)/github/eclipse/mosquitto/android/lib
 
