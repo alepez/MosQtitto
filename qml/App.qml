@@ -1,5 +1,5 @@
 import QtQuick 2.2
-import net.pezzato.myhome 1.0
+import net.pezzato.mqtt 1.0
 
 Rectangle {
   id: root

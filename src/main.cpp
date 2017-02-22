@@ -9,7 +9,7 @@
 int main(int argc, char* argv[]) {
   mosquitto_lib_init();
 
-  qmlRegisterType<MqttClient>("net.pezzato.myhome", 1, 0, "MqttClient");
+  qmlRegisterType<MqttClient>("net.pezzato.mqtt", 1, 0, "MqttClient");
 
   QGuiApplication app(argc, argv);
   app.setOrganizationName("Alessandro Pezzato");

@@ -57,7 +57,7 @@ $(DIST_DIR)/build/outputs/apk/android_armv7-debug.apk: $(BUILD_DIR) $(DIST_DIR)
 
 .PHONY: run
 run: install
-	adb shell am start -a android.intent.action.MAIN -n net.pezzato.myhome/org.qtproject.qt5.android.bindings.QtActivity
+	adb shell am start -a android.intent.action.MAIN -n net.pezzato.mqtt/org.qtproject.qt5.android.bindings.QtActivity
 
 .PHONY: install
 install: apk
