@@ -3,6 +3,7 @@ PROJECT_NAME = MosQtitto
 # QT_ROOT must contain bin include jar lib mkspecs plugins qml src translations
 # Normally it is located in /opt/Qt/5.8/android_armv7
 
+# TODO: Change path
 QT_ROOT ?= /opt/Qt/5.8/android_armv7
 
 # This is named by Project
@@ -10,6 +11,7 @@ DEPLOYMENT_SETTINGS_JSON = ${BUILD_DIR}/android-lib$(PROJECT_NAME).so-deployment
 
 # ANDROID_HOME Must contain
 # add-ons build-tools docs extras platforms platform-tools ... and other files
+# TODO: Change path
 ANDROID_HOME ?= /opt/android/sdk
 
 export ANDROID_HOME
@@ -17,6 +19,7 @@ export ANDROID_SDK_ROOT = $(ANDROID_HOME)
 
 # ANDROID_NDK_ROOT Must contain
 # platform ndk-depends ... and other files
+# TODO: Change path
 export ANDROID_NDK_ROOT=/opt/android-ndk/android-ndk-r10e
 
 export ANDROID_NDK_HOST=linux-x86_64

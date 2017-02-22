@@ -15,10 +15,10 @@ android: {
 
   ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 
-  # FIXME Paths
-  ANDROID_EXTRA_LIBS += /home/pez/github/eclipse/mosquitto/android/lib/libmosquitto.so
-  INCLUDEPATH += /home/pez/github/eclipse/mosquitto/lib
-  LIBS += -L/home/pez/github/eclipse/mosquitto/android/lib
+  # TODO: Change paths
+  ANDROID_EXTRA_LIBS += ~/github/eclipse/mosquitto/android/lib/libmosquitto.so
+  INCLUDEPATH += ~/github/eclipse/mosquitto/lib
+  LIBS += -L~/github/eclipse/mosquitto/android/lib
 
   DISTFILES += android/AndroidManifest.xml
   DISTFILES += android/gradle/wrapper/gradle-wrapper.jar
