@@ -1,10 +1,8 @@
 #include "./MqttClient.hpp"
 #include <mosquitto.h>
 
-#include <QDebug>
 #include <QGuiApplication>
 #include <QQuickView>
-#include <QSslConfiguration>
 
 int main(int argc, char* argv[]) {
   mosquitto_lib_init();
