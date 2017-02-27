@@ -18,7 +18,20 @@ Rectangle {
   MqttClient {
     id: mqtt
 
+    options: {
+      "hostname": "test.mosquitto.org",
+      "port": 1883,
+      "keepalive": 60,
+      // "username": "",
+      // "password": "",
+    }
+
+    onConnected: {
+      subscribe('#');
+    }
+
     onMessage: {
+      console.log('message', topic);
       incoming.push({t:topic, p: payload});
       incomingChanged();
     }
@@ -37,6 +50,6 @@ Rectangle {
   }
 
   Component.onCompleted: {
-    mqtt.connect("test.mosquitto.org", 1883, 60);
+    mqtt.connect();
   }
 }
