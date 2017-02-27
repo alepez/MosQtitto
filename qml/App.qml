@@ -1,4 +1,6 @@
 import QtQuick 2.2
+import QtQuick.Controls 2.1
+import QtQuick.Layouts 1.3
 import net.pezzato.mqtt 1.0
 
 Rectangle {
@@ -8,11 +10,30 @@ Rectangle {
 
   property var incoming: []
 
-  Text {
-    id: logViewer
-    text: format(root.incoming)
-    color: '#ffffff'
-    font.pixelSize: 20
+  ListView {
+    anchors { fill: parent; }
+    model: incoming
+    delegate: Rectangle {
+      color: '#000000'
+      anchors { left: parent.left; right: parent.right; }
+      height: childrenRect.height
+      Column {
+        anchors { left: parent.left; right: parent.right; }
+        Text {
+          text: modelData.topic
+          color: '#cccccc'
+        }
+        Text {
+          text: modelData.payload
+          color: '#ffffff'
+        }
+        Rectangle {
+          anchors { left: parent.left; right: parent.right; }
+          height: 1
+          color: '#ffffff'
+        }
+      }
+    }
   }
 
   MqttClient {
@@ -31,22 +52,10 @@ Rectangle {
     }
 
     onMessage: {
-      console.log('message', topic);
-      incoming.push({t:topic, p: payload});
+      // console.log('message', topic);
+      incoming.push({ topic: topic, payload: payload });
       incomingChanged();
     }
-  }
-
-  function format(messages) {
-    var maxMessages = 100;
-    var txt = '';
-    var end = incoming.length;
-    var begin = Math.max(end - 100, 0);
-    var i;
-    for (i = end - 1; i >= begin; --i) {
-      txt += messages[i].p + '\n';
-    }
-    return txt;
   }
 
   Component.onCompleted: {

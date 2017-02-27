@@ -1,5 +1,5 @@
 TEMPLATE = app
-QT += qml quick
+QT += qml quick quickcontrols2
 RESOURCES += resources.qrc
 CONFIG += c++11
 

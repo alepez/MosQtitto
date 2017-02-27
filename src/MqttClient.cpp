@@ -39,9 +39,8 @@ MqttClient::MqttClient(QObject* parent)
 
   // qDebug() << "MqttClient ctor";
 
-  /* Note: this should be called only once. If you want multiple MqttClient
-   * instances, just move this line in the app initialization. */
-  mosquitto_lib_init();
+  /* See main.cpp */
+  // mosquitto_lib_init();
 
   /* We need these functions to forward signal with using queued connection */
 
@@ -72,9 +71,8 @@ MqttClient::~MqttClient() {
   /* Force disconnection and stop the thread */
   this->disconnect();
 
-  /* Note: this should be called only once. If you want multiple MqttClient
-   * instances, just move this line in the app de-initialization. */
-  mosquitto_lib_cleanup();
+  /* See main.cpp */
+  // mosquitto_lib_cleanup();
 }
 
 void MqttClient::connect() {

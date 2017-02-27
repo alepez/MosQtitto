@@ -1,3 +1,5 @@
+QMAKE ?= /opt/Qt/5.8/gcc_64/bin/qmake
+
 .PHONY: default
 default: all
 
@@ -13,15 +15,17 @@ app: $(DIST_DIR)/bin/MosQtitto
 
 $(DIST_DIR)/bin/MosQtitto: $(BUILD_DIR)/MosQtitto
 	@mkdir -p $(shell dirname $@)
+	@killall MosQtitto || true
+	@sleep 0.1
 	@cp $(BUILD_DIR)/MosQtitto $(DIST_DIR)/bin/MosQtitto
 
-$(BUILD_DIR)/MosQtitto: $(BUILD_DIR)/Makefile $(shell find $(QML_DIR)) $(shell find $(SRC_DIR))
+$(BUILD_DIR)/MosQtitto: $(BUILD_DIR)/Makefile $(shell find $(QML_DIR)) $(shell find $(QML_DIR)) $(shell find $(SRC_DIR))
 	@mkdir -p $(shell dirname $@)
 	@cd $(shell dirname $@) && make
 
 $(BUILD_DIR)/Makefile: $(PRO_FILE)
 	@mkdir -p $(shell dirname $@)
-	@cd $(shell dirname $@) && TARGET=$(TARGET) qtchooser -qt=5 -run-tool=qmake $(PRO_FILE)
+	@cd $(shell dirname $@) && TARGET=$(TARGET) $(QMAKE) $(PRO_FILE)
 
 .PHONY: run
 run: app
