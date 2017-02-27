@@ -57,7 +57,10 @@ ApplicationWindow {
     }
 
     onStringMessage: {
-      incoming.append({ topic: topic, payload: payload });
+      incoming.insert(0, { topic: topic, payload: payload });
+      if (incoming.count > 100) {
+        incoming.remove(100);
+      }
     }
 
     // onJsonMessage: {
