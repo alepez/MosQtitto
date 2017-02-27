@@ -37,7 +37,7 @@ MqttClient::MqttClient(QObject* parent)
     : QThread{parent}
     , isConnected_{false} {
 
-  // qDebug() << "MqttClient ctor";
+  qDebug() << "MqttClient ctor";
 
   /* See main.cpp */
   // mosquitto_lib_init();
@@ -61,10 +61,22 @@ MqttClient::MqttClient(QObject* parent)
     emit message(topic, payload);
   };
 
+  auto onStringMessage = [this](QString topic, QString payload) {
+    /* emit with queued connection */
+    emit stringMessage(topic, payload);
+  };
+
+  auto onJsonMessage = [this](QString topic, QJsonObject payload) {
+    /* emit with queued connection */
+    emit jsonMessage(topic, payload);
+  };
+
   /* QueuedConnection is needed, so callbacks are handled outside of mosquitto thread */
   QObject::connect(this, &MqttClient::_connected, this, onConnected, Qt::QueuedConnection);
   QObject::connect(this, &MqttClient::_disconnected, this, onDisconnected, Qt::QueuedConnection);
   QObject::connect(this, &MqttClient::_message, this, onMessage, Qt::QueuedConnection);
+  QObject::connect(this, &MqttClient::_stringMessage, this, onStringMessage, Qt::QueuedConnection);
+  QObject::connect(this, &MqttClient::_jsonMessage, this, onJsonMessage, Qt::QueuedConnection);
 }
 
 MqttClient::~MqttClient() {
@@ -100,7 +112,7 @@ void MqttClient::run() {
   std::string clientId = options_.contains("clientId") ? options_["clientId"].toString().toStdString() : "";
 
   if (clientId.empty()) {
-    // qDebug() << "Generating a random client id...";
+    qDebug() << "Generating a random client id...";
     clientId = generateRandomClientId();
   }
 
@@ -128,7 +140,7 @@ void MqttClient::run() {
     }
   }
 
-  // qDebug() << "MqttClient connecting...";
+  qDebug() << "MqttClient connecting...";
   rc = mosquitto_connect(mosq, hostname.c_str(), port, keepalive);
 
   if (rc != MOSQ_ERR_SUCCESS) {
@@ -137,7 +149,7 @@ void MqttClient::run() {
     return;
   }
 
-  // qDebug() << "MqttClient connected, starting loop...";
+  qDebug() << "MqttClient connected, starting loop...";
 
   while (continueRunning_) {
     rc = mosquitto_loop(mosq, 1000, 1);
@@ -183,15 +195,18 @@ void MqttClient::publish(QString topic, QByteArray payload, int qos) {
   mutex_.unlock();
 }
 
-void MqttClient::jsonPublish(QString topic, QJsonObject jpayload, int qos) {
-  mutex_.lock();
-  auto payload = QJsonDocument(jpayload).toJson(QJsonDocument::Compact);
+void MqttClient::stringPublish(QString topic, QString spayload, int qos) {
+  auto payload = spayload.toUtf8();
   publishQueue_.push_back(std::make_tuple(topic, payload, qos));
-  mutex_.unlock();
+}
+
+void MqttClient::jsonPublish(QString topic, QJsonObject jpayload, int qos) {
+  auto payload = QJsonDocument(jpayload).toJson(QJsonDocument::Compact);
+  this->publish(topic, payload, qos);
 }
 
 void MqttClient::subscribe(QString topic, int qos) {
-  // qDebug() << "MqttClient subscribe to" << topic;
+  qDebug() << "MqttClient subscribe to" << topic;
   mutex_.lock();
   subscribeQueue_.push_back(std::make_tuple(topic, qos));
   mutex_.unlock();
@@ -225,14 +240,20 @@ void MqttClient::_onMessage(const mosquitto_message* message) {
   QByteArray payload{reinterpret_cast<const char*>(message->payload), message->payloadlen};
 
   emit _message(topic, payload);
-  // qDebug() << "_message emitted";
 
   try {
     auto jdoc = QJsonDocument::fromJson(payload);
     auto jpayload = jdoc.object();
 
     emit _jsonMessage(topic, jpayload);
-    // qDebug() << "_jsonMessage emitted";
+  } catch (...) {
+    /* Ignore parsing errors */
+  }
+
+  try {
+    auto spayload = QString{payload.data()};
+
+    emit _stringMessage(topic, spayload);
   } catch (...) {
     /* Ignore parsing errors */
   }

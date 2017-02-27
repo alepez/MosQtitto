@@ -1,24 +1,29 @@
-#include "./MqttClient.hpp"
-#include <mosquitto.h>
+#include "MqttClient.hpp"
 
+#include <QDebug>
 #include <QGuiApplication>
+#include <QQmlApplicationEngine>
+#include <QQuickStyle>
 #include <QQuickView>
+#include <mosquitto.h>
 
 int main(int argc, char* argv[]) {
   mosquitto_lib_init();
 
   qmlRegisterType<MqttClient>("net.pezzato.mqtt", 1, 0, "MqttClient");
 
-  QGuiApplication app(argc, argv);
-  app.setOrganizationName("Alessandro Pezzato");
-  app.setOrganizationDomain("pezzato.net");
-  app.setApplicationName("MosQtitto");
+  QGuiApplication::setApplicationName("MosQtitto");
+  QGuiApplication::setOrganizationName("Alessandro Pezzato");
+  QGuiApplication::setOrganizationDomain("pezzato.net");
+  QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
-  /* Qt Quick View */
-  QQuickView view;
-  view.setSource(QUrl("qrc:///qml/App.qml"));
-  view.setResizeMode(QQuickView::SizeRootObjectToView);
-  view.show();
+  QGuiApplication app(argc, argv);
+
+  QQuickStyle::setStyle("Material");
+
+  QQmlApplicationEngine engine;
+  engine.load(QUrl("qrc:///qml/App.qml"));
+  if (engine.rootObjects().isEmpty()) return -1;
 
   auto rc = app.exec();
   mosquitto_lib_cleanup();

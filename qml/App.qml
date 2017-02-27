@@ -3,34 +3,39 @@ import QtQuick.Controls 2.1
 import QtQuick.Layouts 1.3
 import net.pezzato.mqtt 1.0
 
-Rectangle {
+ApplicationWindow {
   id: root
 
-  color: '#000000'
+  visible: true
+  width: 960
+  height: 640
+  title: "MosQtitto"
 
-  property var incoming: []
+  ListModel {
+    id: incoming
+  }
 
-  ListView {
+  Pane {
     anchors { fill: parent; }
-    model: incoming
-    delegate: Rectangle {
-      color: '#000000'
-      anchors { left: parent.left; right: parent.right; }
-      height: childrenRect.height
-      Column {
+    ListView {
+      anchors { fill: parent; }
+      model: incoming
+      delegate: Column {
         anchors { left: parent.left; right: parent.right; }
         Text {
-          text: modelData.topic
-          color: '#cccccc'
+          text: topic
+          color: '#666666'
+          font.pixelSize: 10
         }
         Text {
-          text: modelData.payload
-          color: '#ffffff'
+          text: payload.toString()
+          color: '#000000'
+          font.pixelSize: 15
         }
         Rectangle {
           anchors { left: parent.left; right: parent.right; }
           height: 1
-          color: '#ffffff'
+          color: '#000000'
         }
       }
     }
@@ -51,14 +56,17 @@ Rectangle {
       subscribe('#');
     }
 
-    onMessage: {
-      // console.log('message', topic);
-      incoming.push({ topic: topic, payload: payload });
-      incomingChanged();
+    onStringMessage: {
+      incoming.append({ topic: topic, payload: payload });
     }
+
+    // onJsonMessage: {
+    //   incoming.append({ topic: topic, payload: JSON.stringify(payload) });
+    // }
   }
 
   Component.onCompleted: {
+    console.log('component completed');
     mqtt.connect();
   }
 }

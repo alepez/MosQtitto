@@ -23,6 +23,7 @@ public:
   Q_INVOKABLE void disconnect();
 
   Q_INVOKABLE void publish(QString topic, QByteArray payload, int qos = 2);
+  Q_INVOKABLE void stringPublish(QString topic, QString payload, int qos = 2);
   Q_INVOKABLE void jsonPublish(QString topic, QJsonObject payload, int qos = 2);
   Q_INVOKABLE void subscribe(QString topic, int qos = 2);
 
@@ -30,6 +31,7 @@ signals:
   void connected();
   void disconnected();
   void message(QString topic, QByteArray payload);
+  void stringMessage(QString topic, QString payload);
   void jsonMessage(QString topic, QJsonObject payload);
 
   void optionsChanged();
@@ -39,6 +41,7 @@ signals: /* (internal use only) */
   void _connected();
   void _disconnected();
   void _message(QString topic, QByteArray payload);
+  void _stringMessage(QString topic, QString payload);
   void _jsonMessage(QString topic, QJsonObject payload);
 
 public: /* (internal use only) */
