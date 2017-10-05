@@ -1,6 +1,5 @@
 import QtQuick 2.2
 import QtQuick.Controls 2.1
-import QtQuick.Layouts 1.3
 import net.pezzato.mqtt 1.0
 
 ApplicationWindow {
@@ -11,7 +10,8 @@ ApplicationWindow {
   height: 640
   title: "MosQtitto"
 
-  Pane {
+  Rectangle {
+    color: '#ccffcc'
     anchors { top: parent.top; left: parent.left; right: parent.right; }
     height: parent.height * 0.5
 
@@ -25,7 +25,8 @@ ApplicationWindow {
     }
   }
 
-  Pane {
+  Rectangle {
+    color: '#ccccff'
     anchors { bottom: parent.bottom; left: parent.left; right: parent.right; }
     height: parent.height * 0.5
 
