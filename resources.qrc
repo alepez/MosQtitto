@@ -2,5 +2,6 @@
   <qresource prefix="/">
     <file>qml/App.qml</file>
     <file>qml/MessagesViewer.qml</file>
+    <file>qml/MqttConnectionViewer.qml</file>
   </qresource>
 </RCC>

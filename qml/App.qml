@@ -11,48 +11,29 @@ ApplicationWindow {
   height: 640
   title: "MosQtitto"
 
-  ListModel {
-    id: incoming
+  Pane {
+    anchors { top: parent.top; left: parent.left; right: parent.right; }
+    height: parent.height * 0.5
+
+    MqttConnectionViewer {
+      anchors { fill: parent; }
+
+      hostname: "test.mosquitto.org"
+      port: 1883
+      keepalive: 60
+    }
   }
 
   Pane {
-    anchors { fill: parent; }
+    anchors { bottom: parent.bottom; left: parent.left; right: parent.right; }
+    height: parent.height * 0.5
 
-    MessagesViewer {
+    MqttConnectionViewer {
       anchors { fill: parent; }
-      model: incoming
+
+      hostname: "test.mosquitto.org"
+      port: 1883
+      keepalive: 60
     }
-  }
-
-  MqttClient {
-    id: mqtt
-
-    options: {
-      "hostname": "test.mosquitto.org",
-      "port": 1883,
-      "keepalive": 60,
-      // "username": "",
-      // "password": "",
-    }
-
-    onConnected: {
-      subscribe('#');
-    }
-
-    onStringMessage: {
-      incoming.insert(0, { topic: topic, payload: payload });
-      if (incoming.count > 100) {
-        incoming.remove(100);
-      }
-    }
-
-    // onJsonMessage: {
-    //   incoming.append({ topic: topic, payload: JSON.stringify(payload) });
-    // }
-  }
-
-  Component.onCompleted: {
-    console.log('component completed');
-    mqtt.connect();
   }
 }
