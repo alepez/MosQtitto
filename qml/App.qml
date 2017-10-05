@@ -18,6 +18,7 @@ ApplicationWindow {
     MqttConnectionViewer {
       anchors { fill: parent; }
 
+      /* If a client id is not defined, it will be randomly generated */
       hostname: "test.mosquitto.org"
       port: 1883
       keepalive: 60
@@ -33,6 +34,7 @@ ApplicationWindow {
     MqttConnectionViewer {
       anchors { fill: parent; }
 
+      clientId: "MosQtitto-example"
       hostname: "iot.eclipse.org"
       port: 1883
       keepalive: 60

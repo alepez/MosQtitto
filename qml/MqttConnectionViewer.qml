@@ -4,6 +4,7 @@ import net.pezzato.mqtt 1.0
 Item {
   id: root
 
+  property string clientId: ""
   property string hostname: ""
   property int port: 1883
   property int keepalive: 60
@@ -24,6 +25,7 @@ Item {
     id: mqtt
 
     options: {
+      "clientId": root.clientId,
       "hostname": root.hostname,
       "port": root.port,
       "keepalive": root.keepalive,
