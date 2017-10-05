@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="/">
     <file>qml/App.qml</file>
+    <file>qml/MessagesViewer.qml</file>
   </qresource>
 </RCC>

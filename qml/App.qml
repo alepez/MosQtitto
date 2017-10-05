@@ -17,27 +17,10 @@ ApplicationWindow {
 
   Pane {
     anchors { fill: parent; }
-    ListView {
+
+    MessagesViewer {
       anchors { fill: parent; }
       model: incoming
-      delegate: Column {
-        anchors { left: parent.left; right: parent.right; }
-        Text {
-          text: topic
-          color: '#666666'
-          font.pixelSize: 10
-        }
-        Text {
-          text: payload.toString()
-          color: '#000000'
-          font.pixelSize: 15
-        }
-        Rectangle {
-          anchors { left: parent.left; right: parent.right; }
-          height: 1
-          color: '#000000'
-        }
-      }
     }
   }
 
