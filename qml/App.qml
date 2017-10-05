@@ -21,6 +21,7 @@ ApplicationWindow {
       hostname: "test.mosquitto.org"
       port: 1883
       keepalive: 60
+      subscriptions: [ '#' ]
     }
   }
 
@@ -31,9 +32,10 @@ ApplicationWindow {
     MqttConnectionViewer {
       anchors { fill: parent; }
 
-      hostname: "test.mosquitto.org"
+      hostname: "iot.eclipse.org"
       port: 1883
       keepalive: 60
+      subscriptions: [ 'sensor/#' ]
     }
   }
 }

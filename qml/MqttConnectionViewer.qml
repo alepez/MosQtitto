@@ -11,6 +11,7 @@ Item {
   property int keepalive: 60
   property string username: ""
   property string password: ""
+  property var subscriptions: []
 
   ListModel {
     id: incoming
@@ -32,7 +33,11 @@ Item {
       "password": root.password
     }
 
-    onConnected: subscribe('#');
+    onConnected: {
+      for (var i = 0; i < subscriptions.length; ++i) {
+        subscribe(subscriptions[i]);
+      }
+    }
 
     onStringMessage: {
       incoming.insert(0, { topic: topic, payload: payload });
